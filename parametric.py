@@ -18,7 +18,7 @@
     along with inkscape-parametric.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import inkex, simplestyle, simplepath, math, copy, sys
-from StringIO import StringIO
+from io import StringIO
 
 etree = inkex.etree
 
@@ -68,7 +68,7 @@ class SvgDoc(object):
         else:
             return SvgObject(node)
 
-class Parametric(inkex.Effect):
+class Parametric(inkex.EffectExtension):
     """
     This extension adds parametric functionality to the svg document.
      1 - Any python code inside <parametric:script></parametric:script> will be
@@ -120,17 +120,17 @@ class Parametric(inkex.Effect):
         reparsed = False
         try:
             # Parse already parametric svg document
-            self.document = inkex.etree.parse(StringIO(data), parser=p)
+            self.document = inkex.etree.parse(io.StringIO(data), parser=p)
         except:
             # Parse not parametric svg document with 'invalid' parametric attributes
             reparsed = True
             data = self.add_parametric(data)
-            self.document = inkex.etree.parse(StringIO(data), parser=p)
+            self.document = inkex.etree.parse(io.StringIO(data), parser=p)
 
         # Parse non parametric svg document
         if not self.isparametric() and not reparsed:
             data = self.add_parametric(data)
-            self.document = inkex.etree.parse(StringIO(data), parser=p)
+            self.document = inkex.etree.parse(io.StringIO(data), parser=p)
 
         # Add parametric script if not exists
         root = self.getroot()
@@ -190,7 +190,7 @@ class Parametric(inkex.Effect):
 
 if __name__ == '__main__':
     e = Parametric()
-    e.affect()
+    e.run()
 
 
 # vim: expandtab shiftwidth=4 tabstop=4 softtabstop=4 fileencoding=utf-8 textwidth=99

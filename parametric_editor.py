@@ -18,7 +18,6 @@
     along with inkscape-parametric.  If not, see <https://www.gnu.org/licenses/>.    
 '''
 import inkex, simplestyle, simplepath, math, copy, sys, subprocess, tempfile, os
-from StringIO import StringIO
 import parametric
 
 class ParametricEditor(parametric.Parametric):
@@ -37,11 +36,15 @@ class ParametricEditor(parametric.Parametric):
                 code = '""" Write Python code Here """'
             else:
                 code = script.text
-            codeFile = tempfile.NamedTemporaryFile(suffix=".py", delete=False)
+            codeFile = tempfile.NamedTemporaryFile(mode="w+", suffix=".py", delete=False)
             codeFile.write(code)
             codeFileName = codeFile.name
             codeFile.close()
+            # if you have troubles on your windows system, you can comment out the SciTE line
+            # and uncomment the notepad.exe line.  If this works and launches notepad then
+            # it is likely an issue with SciTE not being in the system PATH.
             subprocess.call(['SciTE', codeFileName])
+            #subprocess.call(['notepad.exe', codeFileName])
             codeStream = open(codeFileName, 'r')
             code = codeStream.read()
             codeStream.close()
@@ -54,7 +57,7 @@ class ParametricEditor(parametric.Parametric):
 
 if __name__ == '__main__':
     e = ParametricEditor()
-    e.affect()
+    e.run()
 
 
 # vim: expandtab shiftwidth=4 tabstop=4 softtabstop=4 fileencoding=utf-8 textwidth=99
