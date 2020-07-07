@@ -65,6 +65,9 @@ See: example2.svg
 ## Install
 
 Just copy parametric.py and parametric.inx to your inkscape extensions folder.
+The exact location will vary depending on your inkscape installation and settings.
+From within inkscape select Preferences... under the Edit menu and then select System
+to see where the extensions folder is on your system.
 
 After install, restart inkscape and the extension will appear:
 
